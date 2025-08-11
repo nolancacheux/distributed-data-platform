@@ -1,0 +1,50 @@
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  name: bronzetosilver
+  namespace: spark
+spec:
+  type: Python
+  pythonVersion: "3"
+  mode: cluster
+  image: "openlake/spark-py:3.3.1"
+  imagePullPolicy: Always
+  # mainApplicationFile: https://raw.githubusercontent.com/CyprienKelma/Projet-M1/refs/heads/pipeline-dev/pipeline/workflows/proof_of_concept/script/bronze_to_silver.py
+  mainApplicationFile: local:///opt/spark/examples/src/main/python/py.py
+  sparkVersion: "3.3.1"
+  restartPolicy:
+    type: Never
+  volumes:
+    - name: script-volume
+      configMap:
+        name: bronze-to-silver-script
+  driver:
+    cores: 1
+    memory: 512m
+    serviceAccount: spark
+    labels:
+      version: 3.4.0
+    # volumeMounts:
+    #   - name: script-volume
+    #     mountPath: /opt/spark/scripts
+    env:
+      - name: AWS_ACCESS_KEY_ID
+        value: "minio"
+      - name: AWS_SECRET_ACCESS_KEY
+        value: "minio123"
+      - name: AWS_ENDPOINT
+        value: "http://minio.minio-tenant.svc.cluster.local:9000"
+  executor:
+    cores: 1
+    instances: 1
+    memory: 1g
+    # volumeMounts:
+    #   - name: script-volume
+    #     mountPath: /opt/spark/scripts
+    env:
+      - name: AWS_ACCESS_KEY_ID
+        value: "minio"
+      - name: AWS_SECRET_ACCESS_KEY
+        value: "minio123"
+      - name: AWS_ENDPOINT
+        value: "http://minio.minio-tenant.svc.cluster.local:9000"

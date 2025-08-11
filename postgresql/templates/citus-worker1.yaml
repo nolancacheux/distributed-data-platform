@@ -1,0 +1,24 @@
+# apiVersion: "acid.zalan.do/v1"
+# kind: postgresql
+# metadata:
+#   name: citus-worker-1
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   teamId: "citus"
+#   volume:
+#     size: 5Gi
+#   numberOfInstances: 2
+#   users:
+#     citus: [superuser]
+#   databases:
+#     citusdb: citus
+#   postgresql:
+#     version: "15"
+#     parameters:
+#       shared_preload_libraries: "citus,bg_mon,pg_stat_statements,pgextwlist,pg_auth_mon,set_user,timescaledb,pg_cron,pg_stat_kcache"
+#   patroni:
+#     pg_hba:
+#       - local   all             all                                     trust
+#       - host    all             all             0.0.0.0/0               md5
+#       - hostnossl all           all             0.0.0.0/0               md5
+#       - local   replication     standby                                trust

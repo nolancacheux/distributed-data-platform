@@ -1,0 +1,21 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: postgres-minimal-cluster
+  namespace: {{ .Release.Namespace }}
+spec:
+  teamId: "stmg"
+  volume:
+    size: 1Gi
+  numberOfInstances: 2
+  users:
+    stmg:  # database owner
+    - superuser
+    - createdb
+    backend: []  # role for application foo
+  databases:
+    demo: stmg  # dbname: owner
+  postgresql:
+    version: "17"
+  allowedSourceRanges:
+    - "10.42.0.0/16"

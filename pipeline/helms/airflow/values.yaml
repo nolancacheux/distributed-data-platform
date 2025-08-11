@@ -1,0 +1,106 @@
+airflow:
+  executor: "KubernetesExecutor"
+  extraPipPackages:
+    - "minio"
+    - "duckdb"
+    - "psycopg2-binary"
+    - "pandas"
+    - "apache-airflow-providers-cncf-kubernetes"
+
+  config:
+    core:
+      load_examples: false
+    webserver:
+      enable_proxy_fix: "True"
+      base_url: "https://rancher.bafbi.fr/api/v1/namespaces/airflow/services/http:airflow-webserver:8080/proxy"
+
+  web:
+    port: 8080
+
+  workers:
+    replicas: 1
+
+  flower:
+    enabled: true
+
+  logs:
+    persistence:
+      enabled: false
+
+  createUserJob:
+    useHelmHooks: true
+
+  serviceAccount:
+    create: true
+
+  rbac:
+    create: true
+
+  extraEnvs:
+    - name: AIRFLOW__KUBERNETES__NAMESPACE
+      value: airflow
+    - name: GIT_SYNC_SUBMODULE
+      value: "off"
+    - name: PYTHONPATH
+      value: /opt/airflow/dags/repo
+    - name: AIRFLOW__WEBSERVER__BASE_URL
+      value: "https://rancher.bafbi.fr/api/v1/namespaces/airflow/services/http:airflow-webserver:8080/proxy"
+    - name: SCRIPT_NAME
+      value: "/api/v1/namespaces/airflow/services/http:airflow-webserver:8080/proxy"
+    - name: AIRFLOW__CORE__DAGS_FOLDER
+      value: /opt/airflow/dags/repo/pipeline/workflows
+
+dags:
+  gitSync:
+    enabled: true
+    repo: "https://github.com/CyprienKelma/Projet-M1.git"
+    branch: "pipeline-dev"
+    subPath: "pipeline/workflows"
+    rev: HEAD
+    depth: 1
+    wait: 5
+    maxFailures: 10
+    env:
+      - name: GIT_SYNC_SUBMODULES
+        value: "off"
+
+  persistence:
+    enabled: false
+
+workers:
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "1"
+    limits:
+      memory: "4Gi"
+      cpu: "2"
+
+worker:
+  extraVolumeMounts:
+    - name: duckdb-volume
+      mountPath: /opt/airflow/duckdb
+  extraVolumes:
+    - name: duckdb-volume
+      persistentVolumeClaim:
+        claimName: duckdb-pvc
+
+scheduler:
+  extraVolumeMounts:
+    - name: duckdb-volume
+      mountPath: /opt/airflow/duckdb
+  extraVolumes:
+    - name: duckdb-volume
+      persistentVolumeClaim:
+        claimName: duckdb-pvc
+
+web:
+  extraVolumeMounts:
+    - name: duckdb-volume
+      mountPath: /opt/airflow/duckdb
+  extraVolumes:
+    - name: duckdb-volume
+      persistentVolumeClaim:
+        claimName: duckdb-pvc
+
+

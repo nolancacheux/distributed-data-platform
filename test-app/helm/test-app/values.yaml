@@ -1,0 +1,21 @@
+image:
+  repository: bafbi/m1-test-app
+  tag: latest
+  pullPolicy: Always
+
+env:
+  POSTGRES_HOST: postgres-minimal-cluster.postgresql.svc.cluster.local
+  POSTGRES_USER: stmg
+  POSTGRES_PASSWORD: uzWe8yt6cihF9gbuJi7ot5whT2hsOQfikcCupPLRSA3a70JQQmBacfCspbjKUrwu
+  POSTGRES_DB: demo
+
+  KEYDB_HOST: key-db-keydb.key-db.svc.cluster.local
+
+  NEO4J_HOST: my-neo4j-release.neo4j.svc.cluster.local
+  NEO4J_USER: neo4j
+  NEO4J_PASSWORD: TNtKAyXXPuYQ8e
+
+  CASSANDRA_HOST: demo-dc1-service.cassandra.svc.cluster.local
+  CASSANDRA_KEYSPACE: production
+  CASSANDRA_USER: demo-superuser
+  CASSANDRA_PASSWORD: lwYtM5vqKVtppxoQTd3B

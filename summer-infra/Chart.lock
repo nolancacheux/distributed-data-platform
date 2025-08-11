@@ -1,0 +1,9 @@
+dependencies:
+- name: test
+  repository: file://../test
+  version: 0.1.0
+- name: postgresql
+  repository: file://../postgresql
+  version: 0.1.0
+digest: sha256:c1dac7bcea8ccfa48187e915a9256096f26106a19c837f691bcbee92aca5ad25
+generated: "2025-03-24T13:46:06.607087117+01:00"

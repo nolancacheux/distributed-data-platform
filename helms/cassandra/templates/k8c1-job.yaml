@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-k8c1
+  annotations:
+    helm.sh/hook: pre-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation
+spec:
+  template:
+    spec:
+      serviceAccountName: apply-k8c1
+      restartPolicy: Never
+      containers:
+        - name: apply-k8c1
+          image: bitnami/kubectl:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "⏳ Waiting for k8ssandra operator webhook to be ready..."
+              kubectl wait --for=condition=available deployment -n {{ .Release.Namespace }} {{ .Chart.Name }}-k8ssandra-operator --timeout=120s
+
+              echo "🚀 Applying K8ssandraCluster manifest"
+              cat <<EOF | kubectl apply -f -
+              {{ include "cassandra.k8ssandraClusterManifest" . | nindent 14 }}
+              EOF

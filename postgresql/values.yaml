@@ -1,0 +1,6 @@
+postgres-operator-ui:
+  envs:
+    targetNamespace: "postgressql"
+# postgres-operator:
+#   configGeneral:
+#     docker_image: "bafbi/spilo-citus:latest"

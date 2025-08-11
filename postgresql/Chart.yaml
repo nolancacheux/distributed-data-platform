@@ -1,0 +1,17 @@
+apiVersion: v2
+name: postgresql
+description: A Helm app to deploy PostgreSQL using Bitnami
+type: application
+version: 0.1.0
+appVersion: "15"
+
+dependencies:
+  # - name: postgresql
+  #   version: 15.x.x
+  #   repository: https://charts.bitnami.com/bitnami
+  - name: postgres-operator
+    version: 1.x.x
+    repository: https://opensource.zalando.com/postgres-operator/charts/postgres-operator
+  - name: postgres-operator-ui
+    version: 1.x.x
+    repository: https://opensource.zalando.com/postgres-operator/charts/postgres-operator-ui

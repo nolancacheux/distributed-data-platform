@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: apply-k8c1
+  namespace: {{ .Release.Namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: apply-k8c1
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: apply-k8c1
+  apiGroup: rbac.authorization.k8s.io

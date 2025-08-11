@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jupyter-duckdb
+  namespace: airflow
+spec:
+  containers:
+    - name: jupyter
+      image: jupyter/scipy-notebook
+      args: ["start-notebook.sh", "--NotebookApp.token=''", "--NotebookApp.password=''"]
+      ports:
+        - containerPort: 8888
+      volumeMounts:
+        - name: duckdb-volume
+          mountPath: /mnt/duckdb
+        - name: duckdb-volume
+          mountPath: /opt/airflow/duckdb
+  volumes:
+    - name: duckdb-volume
+      persistentVolumeClaim:
+        claimName: duckdb-pvc

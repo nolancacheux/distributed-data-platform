@@ -1,0 +1,5 @@
+Configuration String:
+  {{ include "test-app.configString" . }}
+
+Configuration Hash:
+  {{ include "test-app.configHash" . }}

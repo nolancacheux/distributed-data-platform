@@ -1,0 +1,20 @@
+tenant:
+  name: minio-tenant
+  namespace: minio-tenant
+
+  users:
+    - name: minio
+      secretRef:
+        name: minio-creds
+
+  pools:
+    - name: pool-0
+      servers: 1
+      volumesPerServer: 1
+      size: 5Gi
+      storageClassName: local-path
+
+  requestAutoCert: false
+
+  mountPath: /export
+  requestAutoCert: true

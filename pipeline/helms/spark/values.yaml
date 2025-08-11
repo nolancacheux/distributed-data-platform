@@ -1,0 +1,23 @@
+sparkJobNamespace: spark
+
+rbac:
+  create: true
+
+serviceAccounts:
+  spark:
+    create: true
+    name: spark
+
+webhook:
+  enable: true
+  port: 4434
+
+metrics:
+  enable: true
+
+# Facultatif – override d'image (si besoin)
+# image:
+#   registry: ghcr.io
+#   repository: kubeflow/spark-operator/controller
+#   tag: v1beta2-1.4.2-3.5.0
+#   pullPolicy: IfNotPresent
